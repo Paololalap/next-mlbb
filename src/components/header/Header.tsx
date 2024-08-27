@@ -5,11 +5,15 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const Header = () => {
+interface HeaderProps {
+  className?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ className }) => {
   const pathname = usePathname();
 
   return (
-    <header className="mb-10">
+    <header className={cn("mb-10", className)}>
       <ul className="flex gap-x-1">
         <li>
           <Button
