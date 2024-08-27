@@ -1,8 +1,8 @@
-import { Header } from "@/components/header/Header";
 import { inter } from "@/fonts/fonts";
 import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: {
@@ -19,9 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "container pt-10")}>
-        <Header />
+      <body className={cn(inter.className, "container")}>
         {children}
+        <Toaster />
       </body>
     </html>
   );
