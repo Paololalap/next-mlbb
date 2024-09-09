@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface HeaderProps {
   className?: string;
@@ -16,28 +17,37 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
     <header className={cn("mb-10", className)}>
       <ul className="flex gap-x-1">
         <li>
-          <Button
-            variant="ghost"
-            className={cn("text-lg", pathname === "/" && "bg-accent")}
-          >
-            Characters
-          </Button>
+          <Link href="/">
+            <Button
+              variant="ghost"
+              className={cn("text-lg", pathname === "/" && "bg-accent")}
+            >
+              Characters
+            </Button>
+          </Link>
         </li>
         <li>
-          <Button
-            variant="ghost"
-            className={cn("text-lg", pathname === "/tier-list" && "bg-accent")}
-          >
-            Tier List
-          </Button>
+          <Link href="/tier-list">
+            <Button
+              variant="ghost"
+              className={cn(
+                "text-lg",
+                pathname === "/tier-list" && "bg-accent",
+              )}
+            >
+              Tier List
+            </Button>
+          </Link>
         </li>
         <li>
-          <Button
-            variant="ghost"
-            className={cn("text-lg", pathname === "/about" && "bg-accent")}
-          >
-            About
-          </Button>
+          <Link href="/about">
+            <Button
+              variant="ghost"
+              className={cn("text-lg", pathname === "/about" && "bg-accent")}
+            >
+              About
+            </Button>
+          </Link>
         </li>
       </ul>
     </header>
