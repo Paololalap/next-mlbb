@@ -24,6 +24,8 @@ interface MLCharacterListProps {
   laneMapping: Record<string, string>;
   onRoleToggle: (roleTitle: string) => void;
   selectedRoles: string[];
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
 const MLCharacterList = ({
@@ -34,13 +36,15 @@ const MLCharacterList = ({
   laneMapping,
   onRoleToggle,
   selectedRoles,
+  searchQuery,
+  onSearchChange,
 }: MLCharacterListProps) => {
   return (
     <main>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{title}</CardTitle>
-          <Search />
+          <Search value={searchQuery} onChange={onSearchChange} />
         </CardHeader>
         <CardContent>
           <div className="flex h-8 items-center justify-center gap-x-5">

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MLCharacterList } from "@/components/MLCharacterList";
+import { Search } from "@/components/Search";
 
 interface Character {
   _id: string;
@@ -32,6 +33,7 @@ export default function Homepage() {
   const [selectedLanes, setSelectedLanes] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function fetchCharacters() {
@@ -66,7 +68,8 @@ export default function Homepage() {
 
   const filteredCharacters = characters.filter((character) =>
     (selectedLanes.length === 0 || selectedLanes.every(lane => character.lane.includes(lane))) &&
-    (selectedRoles.length === 0 || selectedRoles.every(role => character.role.includes(role)))
+    (selectedRoles.length === 0 || selectedRoles.every(role => character.role.includes(role))) &&
+    character.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (error) {
@@ -81,6 +84,8 @@ export default function Homepage() {
       laneMapping={laneMapping}
       onRoleToggle={toggleRole}
       selectedRoles={selectedRoles}
+      searchQuery={searchQuery}
+      onSearchChange={setSearchQuery}
     >
       {filteredCharacters.map((character) => (
         <li
