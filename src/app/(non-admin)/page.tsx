@@ -12,5 +12,10 @@ export async function getCharacters() {
 export default async function Homepage() {
   const characters = await getCharacters();
 
-  return <MLCharacterListWrapper initialCharacters={characters} />;
+  return (
+    <MLCharacterListWrapper
+      initialCharacters={characters}
+      title="Mobile Legends Characters List"
+    />
+  );
 }

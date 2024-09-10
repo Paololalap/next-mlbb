@@ -20,8 +20,10 @@ const laneMapping = {
 
 const MLCharacterListWrapper = ({
   initialCharacters,
+  title,
 }: {
   initialCharacters: Character[];
+  title: string;
 }) => {
   const [characters] = useState<Character[]>(initialCharacters);
   const [selectedLanes, setSelectedLanes] = useState<string[]>([]);
@@ -74,7 +76,7 @@ const MLCharacterListWrapper = ({
 
   return (
     <MLCharacterList
-      title="Mobile Legends Characters List"
+      title={title}
       onLaneToggle={toggleLane}
       selectedLanes={selectedLanes}
       laneMapping={laneMapping}
