@@ -12,7 +12,6 @@ import {
   Root,
   ScrollDownButton,
   ScrollUpButton,
-  Separator,
   Trigger,
   Value,
   Viewport,
@@ -21,6 +20,7 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 
 import { cn } from "@/lib/utils";
+import { Separator } from "@radix-ui/react-separator";
 
 const Select = Root;
 
