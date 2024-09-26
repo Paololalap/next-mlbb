@@ -1,52 +1,18 @@
 "use client";
 
 import { MLCharacterList } from "@/components/MLCharacterList";
-import { useCallback, useMemo, useState } from "react";
-
-interface Character {
-  _id: string;
-  name: string;
-  role: string[];
-  lane: string[];
-}
-
-const laneMapping = {
-  "Gold Lane": "gold",
-  "Exp Lane": "exp",
-  "Mid Lane": "mid",
-  Roamer: "roam",
-  Jungler: "jungle",
-};
+import { useCharacter } from "@/stores/useCharacter";
+import { useMemo } from "react";
 
 const MLCharacterListWrapper = ({
-  initialCharacters,
   title,
+  toggleWeeks,
 }: {
-  initialCharacters: Character[];
   title: string;
+  toggleWeeks: boolean;
 }) => {
-  const [characters] = useState<Character[]>(initialCharacters);
-  const [selectedLanes, setSelectedLanes] = useState<string[]>([]);
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const toggleLane = useCallback((laneTitle: string) => {
-    const apiLaneValue = laneMapping[laneTitle as keyof typeof laneMapping];
-    setSelectedLanes((prev) =>
-      prev.includes(apiLaneValue)
-        ? prev.filter((l) => l !== apiLaneValue)
-        : [...prev, apiLaneValue],
-    );
-  }, []);
-
-  const toggleRole = useCallback((roleTitle: string) => {
-    const apiRoleValue = roleTitle.toLowerCase();
-    setSelectedRoles((prev) =>
-      prev.includes(apiRoleValue)
-        ? prev.filter((r) => r !== apiRoleValue)
-        : [...prev, apiRoleValue],
-    );
-  }, []);
+  // Destructure values from useCharacter hook
+  const { characters, selectedLanes, selectedRoles, searchQuery } = useCharacter();
 
   const filteredCharacters = useMemo(() => {
     return characters.filter(
@@ -58,10 +24,6 @@ const MLCharacterListWrapper = ({
         character.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [characters, selectedLanes, selectedRoles, searchQuery]);
-
-  const handleSearchChange = useCallback((query: string) => {
-    setSearchQuery(query);
-  }, []);
 
   const characterListItems = useMemo(() => {
     return filteredCharacters.map((character) => (
@@ -75,16 +37,7 @@ const MLCharacterListWrapper = ({
   }, [filteredCharacters]);
 
   return (
-    <MLCharacterList
-      title={title}
-      onLaneToggle={toggleLane}
-      selectedLanes={selectedLanes}
-      laneMapping={laneMapping}
-      onRoleToggle={toggleRole}
-      selectedRoles={selectedRoles}
-      searchQuery={searchQuery}
-      onSearchChange={handleSearchChange}
-    >
+    <MLCharacterList title={title} toggleWeeks={toggleWeeks}>
       {characterListItems}
     </MLCharacterList>
   );

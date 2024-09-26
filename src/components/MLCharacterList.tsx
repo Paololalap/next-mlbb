@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ReactNode } from "react";
+import {useCharacter, laneMapping } from "@/stores/useCharacter";
 
 import { Search } from "@/components/Search";
 import {
@@ -13,36 +13,49 @@ import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
 import { LANES } from "@/constants/LANES";
 import { ROLES } from "@/constants/ROLES";
+import { WEEKS } from "@/constants/WEEKS";
 
 interface MLCharacterListProps {
-  children: ReactNode;
+  children: React.ReactNode;
   title: string;
-  onLaneToggle: (laneTitle: string) => void;
-  selectedLanes: string[];
-  laneMapping: Record<string, string>;
-  onRoleToggle: (roleTitle: string) => void;
-  selectedRoles: string[];
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
+  toggleWeeks: boolean;
 }
 
 const MLCharacterList = ({
   children,
   title,
-  onLaneToggle,
-  selectedLanes,
-  laneMapping,
-  onRoleToggle,
-  selectedRoles,
-  searchQuery,
-  onSearchChange,
+  toggleWeeks = false,
 }: MLCharacterListProps) => {
+  const {
+    selectedLanes,
+    selectedRoles,
+    searchQuery,
+    selectedWeek,
+    toggleLane,
+    toggleRole,
+    setSearchQuery,
+    setSelectedWeek,
+  } = useCharacter();
+
   return (
     <main>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{title}</CardTitle>
-          <Search value={searchQuery} onChange={onSearchChange} />
+          {toggleWeeks && (
+            <select
+              value={selectedWeek}
+              onChange={(e) => setSelectedWeek(Number(e.target.value))}
+              className="border border-input rounded-md px-2 py-1"
+            >
+              {WEEKS.map((week) => (
+                <option key={week.week} value={week.week}>
+                  Week {week.week}
+                </option>
+              ))}
+            </select>
+          )}
+          <Search value={searchQuery} onChange={setSearchQuery} />
         </CardHeader>
         <CardContent>
           <div className="flex h-8 items-center justify-center gap-x-5">
@@ -52,8 +65,10 @@ const MLCharacterList = ({
                   <Toggle
                     className="relative size-full border border-input"
                     title={lane.title}
-                    pressed={selectedLanes.includes(laneMapping[lane.title as keyof typeof laneMapping])}
-                    onPressedChange={() => onLaneToggle(lane.title)}
+                    pressed={selectedLanes.includes(
+                      laneMapping[lane.title as keyof typeof laneMapping],
+                    )}
+                    onPressedChange={() => toggleLane(lane.title)}
                   >
                     <Image src={lane.src} fill alt={lane.alt} className="p-2" />
                   </Toggle>
@@ -70,7 +85,7 @@ const MLCharacterList = ({
                     className="relative size-full border border-input"
                     title={role.title}
                     pressed={selectedRoles.includes(role.title.toLowerCase())}
-                    onPressedChange={() => onRoleToggle(role.title)}
+                    onPressedChange={() => toggleRole(role.title)}
                   >
                     <Image src={role.src} fill alt={role.alt} />
                   </Toggle>
