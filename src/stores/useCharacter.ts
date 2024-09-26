@@ -1,9 +1,7 @@
-import { CHARACTERS } from "@/constants/CHARACTERS";
 import { create } from "zustand";
 
 // Define the store state type
 interface CharacterState {
-  characters: Character[];
   selectedLanes: string[];
   selectedRoles: string[];
   searchQuery: string;
@@ -14,17 +12,8 @@ interface CharacterState {
   setSelectedWeek: (week: number) => void;
 }
 
-// Define the Character interface
-interface Character {
-  _id?: string;
-  name: string;
-  role: string[];
-  lane: string[];
-}
-
 // Create the store
 const useCharacter = create<CharacterState>((set) => ({
-  characters: CHARACTERS,
   selectedLanes: [],
   selectedRoles: [],
   searchQuery: "",
