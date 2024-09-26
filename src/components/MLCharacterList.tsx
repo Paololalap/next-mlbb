@@ -1,4 +1,8 @@
+"use client";
+
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 import { Search } from "@/components/Search";
 import {
@@ -38,10 +42,29 @@ const MLCharacterList = ({
     setSelectedWeekCharacters,
   } = useCharacter();
 
-  const handleWeekChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const weekNumber = Number(e.target.value);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleWeekChange = (weekNumber: number) => {
     setSelectedWeek(weekNumber);
     setSelectedWeekCharacters(weekNumber);
+    setIsOpen(false);
   };
 
   return (
@@ -50,17 +73,30 @@ const MLCharacterList = ({
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{title}</CardTitle>
           {toggleWeeks && (
-            <select
-              value={selectedWeek}
-              onChange={handleWeekChange}
-              className="rounded-md border border-input px-2 py-1"
-            >
-              {WEEKS.map((week) => (
-                <option key={week.week} value={week.week}>
-                  Week {week.week}
-                </option>
-              ))}
-            </select>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex h-10 w-[180px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <span>Week {selectedWeek}</span>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </button>
+              {isOpen && (
+                <div className="absolute z-10 mt-1 w-[180px] rounded-md border border-input bg-popover text-popover-foreground shadow-md">
+                  <ul className="py-1">
+                    {WEEKS.map((week) => (
+                      <li
+                        key={week.week}
+                        className="cursor-pointer px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
+                        onClick={() => handleWeekChange(week.week)}
+                      >
+                        Week {week.week}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
           <Search value={searchQuery} onChange={setSearchQuery} />
         </CardHeader>
