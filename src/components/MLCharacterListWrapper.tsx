@@ -2,7 +2,7 @@
 
 import { MLCharacterList } from "@/components/MLCharacterList";
 import { useCharacter } from "@/stores/useCharacter";
-import { useMemo } from "react";
+import { cloneElement, useMemo } from "react";
 
 const MLCharacterListWrapper = ({
   title,
@@ -12,7 +12,8 @@ const MLCharacterListWrapper = ({
   toggleWeeks: boolean;
 }) => {
   // Destructure values from useCharacter hook
-  const { characters, selectedLanes, selectedRoles, searchQuery } = useCharacter();
+  const { characters, selectedLanes, selectedRoles, searchQuery } =
+    useCharacter();
 
   const filteredCharacters = useMemo(() => {
     return characters.filter(
@@ -26,19 +27,22 @@ const MLCharacterListWrapper = ({
   }, [characters, selectedLanes, selectedRoles, searchQuery]);
 
   const characterListItems = useMemo(() => {
-    return filteredCharacters.map((character) => (
-      <li
-        key={character._id}
-        className="grid aspect-square w-full list-none place-items-center break-all rounded-md border p-2 capitalize"
-      >
-        {character.name}
-      </li>
-    ));
+    return filteredCharacters.map((character) => ({
+      // Create an object with key and element properties
+      key: character._id,
+      element: (
+        <li className="grid aspect-square w-full list-none place-items-center break-all rounded-md border p-2 capitalize">
+          {character.name}
+        </li>
+      ),
+    }));
   }, [filteredCharacters]);
 
   return (
     <MLCharacterList title={title} toggleWeeks={toggleWeeks}>
-      {characterListItems}
+      {characterListItems.map(({ key, element }) =>
+        cloneElement(element, { key }),
+      )}
     </MLCharacterList>
   );
 };
