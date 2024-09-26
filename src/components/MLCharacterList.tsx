@@ -138,7 +138,7 @@ const MLCharacterList = ({
           </div>
         </CardContent>
         <CardFooter>
-          <div className="grid grid-cols-8 gap-4">{children}</div>
+          <div className="grid grid-cols-8 gap-4 w-full">{children}</div>
         </CardFooter>
       </Card>
     </main>
