@@ -15,13 +15,16 @@ interface CharacterState {
   setSelectedWeekCharacters: (weekNumber: number) => void;
 }
 
+// Get the highest week number
+const highestWeekNumber = Math.max(...WEEKS.map(week => week.week));
+
 // Create the store
 const useCharacter = create<CharacterState>((set) => ({
   selectedLanes: [],
   selectedRoles: [],
   searchQuery: "",
-  selectedWeek: 1,
-  selectedWeekCharacters: WEEKS[0].characters,
+  selectedWeek: highestWeekNumber,
+  selectedWeekCharacters: WEEKS.find(week => week.week === highestWeekNumber)?.characters || [],
 
   toggleLane: (laneTitle) =>
     set((state) => {
@@ -46,7 +49,7 @@ const useCharacter = create<CharacterState>((set) => ({
   setSelectedWeek: (week) => set({ selectedWeek: week }),
 
   setSelectedWeekCharacters: (weekNumber) => set((state) => ({
-    selectedWeekCharacters: WEEKS.find(week => week.week === weekNumber)?.characters || WEEKS[0].characters
+    selectedWeekCharacters: WEEKS.find(week => week.week === weekNumber)?.characters || []
   })),
 }));
 
