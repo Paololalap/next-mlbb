@@ -4,16 +4,24 @@ import { MLCharacterList } from "@/components/MLCharacterList";
 import { useCharacter } from "@/stores/useCharacter";
 import { cloneElement, useMemo } from "react";
 
+interface Character {
+  _id?: string;
+  name: string;
+  role: string[];
+  lane: string[];
+}
+
 const MLCharacterListWrapper = ({
   title,
   toggleWeeks,
+  characters,
 }: {
   title: string;
   toggleWeeks: boolean;
+  characters: Character[];
 }) => {
   // Destructure values from useCharacter hook
-  const { characters, selectedLanes, selectedRoles, searchQuery } =
-    useCharacter();
+  const { selectedLanes, selectedRoles, searchQuery } = useCharacter();
 
   const filteredCharacters = useMemo(() => {
     return characters.filter(

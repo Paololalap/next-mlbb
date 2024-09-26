@@ -1,12 +1,14 @@
-
-import { MLCharacterList } from "@/components/MLCharacterList";
+import { MLCharacterListWrapper } from "@/components/MLCharacterListWrapper";
+import { CHARACTERS } from "@/constants/CHARACTERS";
 
 export default function TierListPage() {
   return (
     <main>
-      <MLCharacterList title="Mobile Legends Meta Characters List">
-        
-      </MLCharacterList>
+      <MLCharacterListWrapper
+        characters={CHARACTERS}
+        title="Mobile Legends Meta Characters"
+        toggleWeeks={true}
+      />
     </main>
   );
 }

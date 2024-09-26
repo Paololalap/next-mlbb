@@ -1,4 +1,5 @@
 import { MLCharacterListWrapper } from "@/components/MLCharacterListWrapper";
+import { CHARACTERS } from "@/constants/CHARACTERS";
 
 export async function getCharacters() {
   const res = await fetch("http://localhost:3000/api/characters");
@@ -10,12 +11,13 @@ export async function getCharacters() {
 }
 
 export default async function Homepage() {
-  const characters = await getCharacters();
+  // const characters = await getCharacters();
 
   return (
     <MLCharacterListWrapper
-      initialCharacters={characters}
       title="Mobile Legends Characters List"
+      characters={CHARACTERS}
+      toggleWeeks={false}
     />
   );
 }
