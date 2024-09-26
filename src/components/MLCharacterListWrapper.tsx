@@ -35,8 +35,8 @@ const MLCharacterListWrapper = ({
   }, [characters, selectedLanes, selectedRoles, searchQuery]);
 
   const characterListItems = useMemo(() => {
-    return filteredCharacters.map((character) => ({
-      key: character.name, 
+    return filteredCharacters.map((character, index) => ({
+      key: index, 
       element: (
         <li className="grid aspect-square w-full list-none place-items-center break-all rounded-md border p-2 capitalize">
           {character.name}
