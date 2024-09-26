@@ -35,7 +35,14 @@ const MLCharacterList = ({
     toggleRole,
     setSearchQuery,
     setSelectedWeek,
+    setSelectedWeekCharacters,
   } = useCharacter();
+
+  const handleWeekChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const weekNumber = Number(e.target.value);
+    setSelectedWeek(weekNumber);
+    setSelectedWeekCharacters(weekNumber);
+  };
 
   return (
     <main>
@@ -45,7 +52,7 @@ const MLCharacterList = ({
           {toggleWeeks && (
             <select
               value={selectedWeek}
-              onChange={(e) => setSelectedWeek(Number(e.target.value))}
+              onChange={handleWeekChange}
               className="rounded-md border border-input px-2 py-1"
             >
               {WEEKS.map((week) => (

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { WEEKS } from '@/constants/WEEKS';
 
 // Define the store state type
 interface CharacterState {
@@ -10,6 +11,8 @@ interface CharacterState {
   toggleRole: (roleTitle: string) => void;
   setSearchQuery: (query: string) => void;
   setSelectedWeek: (week: number) => void;
+  selectedWeekCharacters: typeof WEEKS[0]['characters'];
+  setSelectedWeekCharacters: (weekNumber: number) => void;
 }
 
 // Create the store
@@ -18,6 +21,7 @@ const useCharacter = create<CharacterState>((set) => ({
   selectedRoles: [],
   searchQuery: "",
   selectedWeek: 1,
+  selectedWeekCharacters: WEEKS[0].characters,
 
   toggleLane: (laneTitle) =>
     set((state) => {
@@ -40,6 +44,10 @@ const useCharacter = create<CharacterState>((set) => ({
   setSearchQuery: (query) => set({ searchQuery: query }),
 
   setSelectedWeek: (week) => set({ selectedWeek: week }),
+
+  setSelectedWeekCharacters: (weekNumber) => set((state) => ({
+    selectedWeekCharacters: WEEKS.find(week => week.week === weekNumber)?.characters || WEEKS[0].characters
+  })),
 }));
 
 // Export the laneMapping object

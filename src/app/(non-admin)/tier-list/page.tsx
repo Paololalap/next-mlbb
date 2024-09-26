@@ -1,11 +1,15 @@
+"use client";
+
 import { MLCharacterListWrapper } from "@/components/MLCharacterListWrapper";
-import { CHARACTERS } from "@/constants/CHARACTERS";
+import { useCharacter } from "@/stores/useCharacter";
 
 export default function TierListPage() {
+  const { selectedWeekCharacters } = useCharacter();
+
   return (
     <main>
       <MLCharacterListWrapper
-        characters={CHARACTERS}
+        characters={selectedWeekCharacters}
         title="Mobile Legends Meta Characters"
         toggleWeeks={true}
       />
