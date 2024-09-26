@@ -1,5 +1,4 @@
 import Image from "next/image";
-import {useCharacter, laneMapping } from "@/stores/useCharacter";
 
 import { Search } from "@/components/Search";
 import {
@@ -14,6 +13,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { LANES } from "@/constants/LANES";
 import { ROLES } from "@/constants/ROLES";
 import { WEEKS } from "@/constants/WEEKS";
+import { laneMapping, useCharacter } from "@/stores/useCharacter";
 
 interface MLCharacterListProps {
   children: React.ReactNode;
@@ -46,7 +46,7 @@ const MLCharacterList = ({
             <select
               value={selectedWeek}
               onChange={(e) => setSelectedWeek(Number(e.target.value))}
-              className="border border-input rounded-md px-2 py-1"
+              className="rounded-md border border-input px-2 py-1"
             >
               {WEEKS.map((week) => (
                 <option key={week.week} value={week.week}>
