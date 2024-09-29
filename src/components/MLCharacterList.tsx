@@ -1,9 +1,9 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion"; // Add this import
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion"; // Add this import
 
 import { Search } from "@/components/Search";
 import {
@@ -71,7 +71,7 @@ const MLCharacterList = ({
   return (
     <main>
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-row justify-between space-y-0">
           <div className="flex items-center gap-x-3">
             <CardTitle>{title}</CardTitle>
             {toggleWeeks && (
@@ -119,7 +119,7 @@ const MLCharacterList = ({
           <Search value={searchQuery} onChange={setSearchQuery} />
         </CardHeader>
         <CardContent>
-          <div className="flex h-8 items-center justify-center gap-x-5">
+          <div className="flex items-center justify-center gap-x-5">
             <ul className="flex gap-x-2">
               {LANES.map((lane) => (
                 <li key={lane.title} className="size-10">
