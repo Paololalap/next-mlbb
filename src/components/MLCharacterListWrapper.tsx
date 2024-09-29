@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 import { MLCharacterList } from "@/components/MLCharacterList";
 import { LANES } from "@/constants/LANES";
@@ -30,8 +30,22 @@ const MLCharacterListWrapper = ({
   // Destructure values from useCharacter hook
   const { selectedLanes, selectedRoles, searchQuery } = useCharacter();
 
+  // Add this new state
+  const [uniqueCharacters, setUniqueCharacters] = useState<Character[]>([]);
+
+  // Add this useEffect hook
+  useEffect(() => {
+    const uniqueChars = characters.map(char => ({
+      ...char,
+      // Create a unique identifier using name and lane
+      uniqueId: `${char.name}-${char.lane.join('-')}`
+    }));
+    setUniqueCharacters(uniqueChars);
+  }, [characters]);
+
   const filteredCharacters = useMemo(() => {
-    return characters.filter(
+    // Update this to use uniqueCharacters instead of characters
+    return uniqueCharacters.filter(
       (character) =>
         (selectedLanes.length === 0 ||
           selectedLanes.every((lane) => character.lane.includes(lane))) &&
@@ -39,7 +53,7 @@ const MLCharacterListWrapper = ({
           selectedRoles.every((role) => character.role.includes(role))) &&
         character.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
-  }, [characters, selectedLanes, selectedRoles, searchQuery]);
+  }, [uniqueCharacters, selectedLanes, selectedRoles, searchQuery]);
 
   const tierLists = useMemo(() => {
     const tiers: { [key: string]: Character[] } = {
@@ -53,13 +67,15 @@ const MLCharacterListWrapper = ({
     filteredCharacters.forEach((character) => {
       const weekData = WEEKS.find((week) =>
         week.characters.some(
-          (c) => c.name.toLowerCase() === character.name.toLowerCase(),
+          (c) => c.name.toLowerCase() === character.name.toLowerCase() &&
+                 c.lane.every(lane => character.lane.includes(lane))
         ),
       );
 
       if (weekData) {
         const characterData = weekData.characters.find(
-          (c) => c.name.toLowerCase() === character.name.toLowerCase(),
+          (c) => c.name.toLowerCase() === character.name.toLowerCase() &&
+                 c.lane.every(lane => character.lane.includes(lane))
         );
         if (characterData) {
           switch (characterData.tierScore) {
