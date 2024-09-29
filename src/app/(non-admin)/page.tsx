@@ -18,6 +18,7 @@ export default async function Homepage() {
       title="Mobile Legends Characters List"
       characters={CHARACTERS}
       toggleWeeks={false}
+      tierList={false}
     />
   );
 }

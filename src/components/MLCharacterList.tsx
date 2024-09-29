@@ -78,8 +78,8 @@ const MLCharacterList = ({
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex h-10 w-[180px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <span>Week {selectedWeek}</span>
-                <ChevronDown className="w-4 h-4 opacity-50" />
+                Week {selectedWeek}
+                <ChevronDown className="size-4 opacity-50" />
               </button>
               {isOpen && (
                 <div className="absolute z-10 mt-1 w-[180px] rounded-md border border-input bg-popover text-popover-foreground shadow-md">
@@ -101,12 +101,12 @@ const MLCharacterList = ({
           <Search value={searchQuery} onChange={setSearchQuery} />
         </CardHeader>
         <CardContent>
-          <div className="flex items-center justify-center h-8 gap-x-5">
+          <div className="flex h-8 items-center justify-center gap-x-5">
             <ul className="flex gap-x-2">
               {LANES.map((lane) => (
                 <li key={lane.title} className="size-10">
                   <Toggle
-                    className="relative border size-full border-input"
+                    className="relative size-full border border-input"
                     title={lane.title}
                     pressed={selectedLanes.includes(
                       laneMapping[lane.title as keyof typeof laneMapping],
@@ -125,7 +125,7 @@ const MLCharacterList = ({
               {ROLES.map((role) => (
                 <li key={role.title} className="size-10">
                   <Toggle
-                    className="relative border size-full border-input"
+                    className="relative size-full border border-input"
                     title={role.title}
                     pressed={selectedRoles.includes(role.title.toLowerCase())}
                     onPressedChange={() => toggleRole(role.title)}
@@ -137,9 +137,7 @@ const MLCharacterList = ({
             </ul>
           </div>
         </CardContent>
-        <CardFooter>
-          <div className="grid w-full grid-cols-8 gap-4">{children}</div>
-        </CardFooter>
+        <CardFooter>{children}</CardFooter>
       </Card>
     </main>
   );

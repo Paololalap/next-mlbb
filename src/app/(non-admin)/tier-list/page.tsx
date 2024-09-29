@@ -12,6 +12,7 @@ export default function TierListPage() {
         characters={selectedWeekCharacters}
         title="Mobile Legends Meta Characters"
         toggleWeeks={true}
+        tierList={true}
       />
     </main>
   );

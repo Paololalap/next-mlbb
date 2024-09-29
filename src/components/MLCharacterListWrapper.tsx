@@ -1,10 +1,13 @@
 "use client";
 
+import Image from "next/image";
+import { useMemo } from "react";
+
 import { MLCharacterList } from "@/components/MLCharacterList";
+import { LANES } from "@/constants/LANES";
+import { TIER_COLORS } from "@/constants/TIER_COLORS";
+import { WEEKS } from "@/constants/WEEKS";
 import { useCharacter } from "@/stores/useCharacter";
-import { cloneElement, useMemo } from "react";
-import Image from 'next/image';
-import { LANES } from '@/constants/LANES';
 
 interface Character {
   _id?: string;
@@ -17,10 +20,12 @@ const MLCharacterListWrapper = ({
   title,
   toggleWeeks,
   characters,
+  tierList,
 }: {
   title: string;
   toggleWeeks: boolean;
   characters: Character[];
+  tierList: boolean;
 }) => {
   // Destructure values from useCharacter hook
   const { selectedLanes, selectedRoles, searchQuery } = useCharacter();
@@ -36,29 +41,123 @@ const MLCharacterListWrapper = ({
     );
   }, [characters, selectedLanes, selectedRoles, searchQuery]);
 
-  const characterListItems = useMemo(() => {
-    return filteredCharacters.map((character, index) => ({
-      key: index, 
-      element: (
-        <li className="relative grid w-full p-2 capitalize break-all list-none border rounded-md aspect-square place-items-center">
-          {character.name}
-          <div className="absolute top-0 right-0 size-5 bg-black/50">
-            <Image
-              src={LANES.find(lane => character.lane.includes(lane.apiValue))?.src || ''}
-              alt={LANES.find(lane => character.lane.includes(lane.apiValue))?.alt || ''}
-              className=''
-              fill
-            />
-          </div>
-        </li>
-      ),
-    }));  
+  const tierLists = useMemo(() => {
+    const tiers: { [key: string]: Character[] } = {
+      SSS: [],
+      SS: [],
+      S: [],
+      A: [],
+      B: [],
+    };
+
+    filteredCharacters.forEach((character) => {
+      const weekData = WEEKS.find((week) =>
+        week.characters.some(
+          (c) => c.name.toLowerCase() === character.name.toLowerCase(),
+        ),
+      );
+
+      if (weekData) {
+        const characterData = weekData.characters.find(
+          (c) => c.name.toLowerCase() === character.name.toLowerCase(),
+        );
+        if (characterData) {
+          switch (characterData.tierScore) {
+            case 5:
+              tiers.SSS.push(character);
+              break;
+            case 4:
+              tiers.SS.push(character);
+              break;
+            case 3:
+              tiers.S.push(character);
+              break;
+            case 2:
+              tiers.A.push(character);
+              break;
+            case 1:
+            default:
+              tiers.B.push(character);
+              break;
+          }
+        }
+      }
+    });
+
+    return tiers;
   }, [filteredCharacters]);
 
   return (
     <MLCharacterList title={title} toggleWeeks={toggleWeeks}>
-      {characterListItems.map(({ key, element }) =>
-        cloneElement(element, { key }),
+      {tierList ? (
+        <div className="w-full space-y-2 rounded-lg bg-secondary p-2">
+          {Object.entries(tierLists).map(([tier, characters]) => (
+            <div key={tier} className="flex gap-x-2">
+              <div
+                className={`${TIER_COLORS[tier as keyof typeof TIER_COLORS]} flex min-h-16 min-w-16 items-center justify-center rounded-lg text-2xl font-bold text-black`}
+              >
+                {tier}
+              </div>
+              <div className="grid w-full grid-cols-8 gap-2 rounded-lg bg-secondary">
+                {characters.map((character, index) => (
+                  <div
+                    key={index}
+                    className="relative aspect-square rounded-md bg-gray-600"
+                  >
+                    <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm capitalize">
+                      {character.name}
+                    </span>
+                    <div className="absolute right-0.5 top-0.5 size-5">
+                      <Image
+                        src={
+                          LANES.find((lane) =>
+                            character.lane.includes(lane.apiValue),
+                          )?.src || ""
+                        }
+                        alt={
+                          LANES.find((lane) =>
+                            character.lane.includes(lane.apiValue),
+                          )?.alt || ""
+                        }
+                        fill
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="w-full rounded-lg">
+          <div className="grid grid-cols-8 gap-2">
+            {filteredCharacters.map((character, index) => (
+              <div
+                key={index}
+                className="relative aspect-square rounded-md bg-secondary"
+              >
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm capitalize">
+                  {character.name}
+                </span>
+                <div className="absolute right-0.5 top-0.5 size-5">
+                  <Image
+                    src={
+                      LANES.find((lane) =>
+                        character.lane.includes(lane.apiValue)
+                      )?.src || ""
+                    }
+                    alt={
+                      LANES.find((lane) =>
+                        character.lane.includes(lane.apiValue)
+                      )?.alt || ""
+                    }
+                    fill
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </MLCharacterList>
   );
