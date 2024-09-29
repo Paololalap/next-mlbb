@@ -3,6 +3,7 @@
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion"; // Add this import
 
 import { Search } from "@/components/Search";
 import {
@@ -75,28 +76,43 @@ const MLCharacterList = ({
             <CardTitle>{title}</CardTitle>
             {toggleWeeks && (
               <div className="relative" ref={dropdownRef}>
-                <button
+                <motion.button
                   onClick={() => setIsOpen(!isOpen)}
                   className="flex h-10 w-fit items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  whileTap={{ scale: 0.95 }}
                 >
                   Week {selectedWeek}
-                  <ChevronDown className="ml-2 size-4 opacity-50" />
-                </button>
-                {isOpen && (
-                  <div className="absolute z-10 mt-1 w-fit rounded-md border border-input bg-popover text-popover-foreground shadow-md">
-                    <ul>
-                      {WEEKS.map((week) => (
-                        <li
-                          key={week.week}
-                          className="flex h-10 w-[96.73px] cursor-pointer items-center whitespace-nowrap pl-3 text-sm hover:bg-accent hover:text-accent-foreground"
-                          onClick={() => handleWeekChange(week.week)}
-                        >
-                          Week {week.week}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                  <motion.div
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="ml-2"
+                  >
+                    <ChevronDown className="size-4 opacity-50" />
+                  </motion.div>
+                </motion.button>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute z-10 mt-1 w-fit rounded-md border border-input bg-popover text-popover-foreground shadow-md"
+                    >
+                      <ul className="overflow-hidden">
+                        {WEEKS.map((week) => (
+                          <motion.li
+                            key={week.week}
+                            className="flex h-10 w-[96.73px] cursor-pointer items-center whitespace-nowrap pl-3 text-sm hover:bg-accent hover:text-accent-foreground"
+                            onClick={() => handleWeekChange(week.week)}
+                          >
+                            Week {week.week}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             )}
           </div>
