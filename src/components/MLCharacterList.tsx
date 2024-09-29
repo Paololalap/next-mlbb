@@ -71,33 +71,35 @@ const MLCharacterList = ({
     <main>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>{title}</CardTitle>
-          {toggleWeeks && (
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="flex h-10 w-[180px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Week {selectedWeek}
-                <ChevronDown className="size-4 opacity-50" />
-              </button>
-              {isOpen && (
-                <div className="absolute z-10 mt-1 w-[180px] rounded-md border border-input bg-popover text-popover-foreground shadow-md">
-                  <ul className="py-1">
-                    {WEEKS.map((week) => (
-                      <li
-                        key={week.week}
-                        className="cursor-pointer px-3 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
-                        onClick={() => handleWeekChange(week.week)}
-                      >
-                        Week {week.week}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
+          <div className="flex items-center gap-x-3">
+            <CardTitle>{title}</CardTitle>
+            {toggleWeeks && (
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="flex h-10 w-fit items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Week {selectedWeek}
+                  <ChevronDown className="ml-2 size-4 opacity-50" />
+                </button>
+                {isOpen && (
+                  <div className="absolute z-10 mt-1 w-fit rounded-md border border-input bg-popover text-popover-foreground shadow-md">
+                    <ul>
+                      {WEEKS.map((week) => (
+                        <li
+                          key={week.week}
+                          className="flex h-10 w-[96.73px] cursor-pointer items-center whitespace-nowrap pl-3 text-sm hover:bg-accent hover:text-accent-foreground"
+                          onClick={() => handleWeekChange(week.week)}
+                        >
+                          Week {week.week}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           <Search value={searchQuery} onChange={setSearchQuery} />
         </CardHeader>
         <CardContent>
