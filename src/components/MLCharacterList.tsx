@@ -35,7 +35,6 @@ const MLCharacterList = ({
     selectedLanes,
     selectedRoles,
     searchQuery,
-    selectedWeek,
     selectedWeekLabel,
     toggleLane,
     toggleRole,
@@ -69,6 +68,9 @@ const MLCharacterList = ({
     setIsOpen(false);
   };
 
+  // Sort weeks in descending order
+  const sortedWeeks = [...WEEKS].sort((a, b) => b.week - a.week);
+
   return (
     <main>
       <Card>
@@ -80,7 +82,6 @@ const MLCharacterList = ({
                 <motion.button
                   onClick={() => setIsOpen(!isOpen)}
                   className="flex h-10 w-[160px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  whileTap={{ scale: 0.95 }}
                 >
                   <span className="truncate">{selectedWeekLabel}</span>
                   <motion.div
@@ -93,25 +94,23 @@ const MLCharacterList = ({
                 </motion.button>
                 <AnimatePresence>
                   {isOpen && (
-                    <motion.div
+                    <motion.ul
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute z-10 mt-1 w-fit rounded-md border border-input bg-popover text-popover-foreground shadow-md"
+                      className="absolute z-10 mt-2 w-[160px] rounded-md border bg-popover text-popover-foreground shadow-md"
                     >
-                      <ul className="overflow-hidden">
-                        {WEEKS.map((week) => (
-                          <motion.li
-                            key={week.week}
-                            className="flex h-10 w-[160px] cursor-pointer items-center whitespace-nowrap pl-3 text-sm hover:bg-accent hover:text-accent-foreground"
-                            onClick={() => handleWeekChange(week.week)}
-                          >
-                            Week {week.week}
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </motion.div>
+                      {sortedWeeks.map((week) => (
+                        <motion.li
+                          key={week.week}
+                          className="flex h-10 w-[160px] cursor-pointer items-center whitespace-nowrap px-3 text-sm hover:bg-accent hover:text-accent-foreground"
+                          onClick={() => handleWeekChange(week.week)}
+                        >
+                          Week {week.week}
+                        </motion.li>
+                      ))}
+                    </motion.ul>
                   )}
                 </AnimatePresence>
               </div>
