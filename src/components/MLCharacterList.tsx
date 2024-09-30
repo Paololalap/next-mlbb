@@ -79,14 +79,14 @@ const MLCharacterList = ({
               <div className="relative" ref={dropdownRef}>
                 <motion.button
                   onClick={() => setIsOpen(!isOpen)}
-                  className="flex h-10 w-fit items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-10 w-[160px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   whileTap={{ scale: 0.95 }}
                 >
-                  {selectedWeekLabel}
+                  <span className="truncate">{selectedWeekLabel}</span>
                   <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="ml-2"
+                    className="ml-2 flex-shrink-0"
                   >
                     <ChevronDown className="size-4 opacity-50" />
                   </motion.div>
@@ -104,7 +104,7 @@ const MLCharacterList = ({
                         {WEEKS.map((week) => (
                           <motion.li
                             key={week.week}
-                            className="flex h-10 w-[96.73px] cursor-pointer items-center whitespace-nowrap pl-3 text-sm hover:bg-accent hover:text-accent-foreground"
+                            className="flex h-10 w-[160px] cursor-pointer items-center whitespace-nowrap pl-3 text-sm hover:bg-accent hover:text-accent-foreground"
                             onClick={() => handleWeekChange(week.week)}
                           >
                             Week {week.week}
