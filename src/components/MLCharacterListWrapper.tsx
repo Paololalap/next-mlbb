@@ -110,7 +110,7 @@ const MLCharacterListWrapper = ({
           {Object.entries(tierLists).map(([tier, characters]) => (
             <div key={tier} className="flex gap-x-2">
               <div
-                className={`${TIER_COLORS[tier as keyof typeof TIER_COLORS]} flex min-h-16 min-w-16 items-center justify-center rounded-lg text-2xl font-bold text-black`}
+                className={`${TIER_COLORS[tier as keyof typeof TIER_COLORS]} flex min-h-[92.75px] min-w-16 items-center justify-center rounded-lg text-2xl font-bold text-black`}
               >
                 {tier}
               </div>
