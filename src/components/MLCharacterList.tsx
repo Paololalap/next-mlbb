@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion"; // Add this import
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -36,6 +36,7 @@ const MLCharacterList = ({
     selectedRoles,
     searchQuery,
     selectedWeek,
+    selectedWeekLabel,
     toggleLane,
     toggleRole,
     setSearchQuery,
@@ -81,7 +82,7 @@ const MLCharacterList = ({
                   className="flex h-10 w-fit items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   whileTap={{ scale: 0.95 }}
                 >
-                  Week {selectedWeek}
+                  {selectedWeekLabel}
                   <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}

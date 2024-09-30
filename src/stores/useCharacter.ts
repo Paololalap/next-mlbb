@@ -13,6 +13,7 @@ interface CharacterState {
   setSelectedWeek: (week: number) => void;
   selectedWeekCharacters: typeof WEEKS[0]['characters'];
   setSelectedWeekCharacters: (weekNumber: number) => void;
+  selectedWeekLabel: string;
 }
 
 // Get the highest week number
@@ -25,6 +26,7 @@ const useCharacter = create<CharacterState>((set) => ({
   searchQuery: "",
   selectedWeek: highestWeekNumber,
   selectedWeekCharacters: WEEKS.find(week => week.week === highestWeekNumber)?.characters || [],
+  selectedWeekLabel: "Current Patch",
 
   toggleLane: (laneTitle) =>
     set((state) => {
@@ -46,7 +48,13 @@ const useCharacter = create<CharacterState>((set) => ({
 
   setSearchQuery: (query) => set({ searchQuery: query }),
 
-  setSelectedWeek: (week) => set({ selectedWeek: week }),
+  setSelectedWeek: (week) => set((state) => {
+    const newLabel = week === highestWeekNumber ? "Current Patch" : `Week ${week}`;
+    return { 
+      selectedWeek: week,
+      selectedWeekLabel: newLabel
+    };
+  }),
 
   setSelectedWeekCharacters: (weekNumber) => set((state) => ({
     selectedWeekCharacters: WEEKS.find(week => week.week === weekNumber)?.characters || []
