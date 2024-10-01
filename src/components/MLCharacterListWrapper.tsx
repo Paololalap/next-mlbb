@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { MLCharacterList } from "@/components/MLCharacterList";
 import { LANES } from "@/constants/LANES";
@@ -36,11 +36,16 @@ const MLCharacterListWrapper = ({
 
   // Add this useEffect hook
   useEffect(() => {
-    const uniqueChars = characters.map((char) => ({
-      ...char,
-      // Create a unique identifier using name and lane
-      uniqueId: `${char.name}-${char.lane.join("-")}`,
-    }));
+    const uniqueChars = characters.reduce(
+      (acc, char) => {
+        const uniqueId = `${char.name}-${char.lane.join("-")}`;
+        if (!acc.some((c) => c.uniqueId === uniqueId)) {
+          acc.push({ ...char, uniqueId });
+        }
+        return acc;
+      },
+      [] as (Character & { uniqueId: string })[],
+    );
     setUniqueCharacters(uniqueChars);
   }, [characters]);
 
@@ -56,6 +61,32 @@ const MLCharacterListWrapper = ({
     );
   }, [uniqueCharacters, selectedLanes, selectedRoles, searchQuery]);
 
+  const getTierForCharacter = useCallback(
+    (character: Character, weekData: (typeof WEEKS)[0]) => {
+      const characterData = weekData.characters.find(
+        (c) =>
+          c.name.toLowerCase() === character.name.toLowerCase() &&
+          c.lane.every((lane) => character.lane.includes(lane)),
+      );
+      if (characterData) {
+        switch (characterData.tierScore) {
+          case 5:
+            return "SSS";
+          case 4:
+            return "SS";
+          case 3:
+            return "S";
+          case 2:
+            return "A";
+          default:
+            return "B";
+        }
+      }
+      return "B";
+    },
+    [],
+  );
+
   const tierLists = useMemo(() => {
     const tiers: { [key: string]: Character[] } = {
       SSS: [],
@@ -65,40 +96,16 @@ const MLCharacterListWrapper = ({
       B: [],
     };
 
-    filteredCharacters.forEach((character) => {
-      const weekData = WEEKS.find((week) => week.week === selectedWeek);
-
-      if (weekData) {
-        const characterData = weekData.characters.find(
-          (c) =>
-            c.name.toLowerCase() === character.name.toLowerCase() &&
-            c.lane.every((lane) => character.lane.includes(lane)),
-        );
-        if (characterData) {
-          switch (characterData.tierScore) {
-            case 5:
-              tiers.SSS.push(character);
-              break;
-            case 4:
-              tiers.SS.push(character);
-              break;
-            case 3:
-              tiers.S.push(character);
-              break;
-            case 2:
-              tiers.A.push(character);
-              break;
-            case 1:
-            default:
-              tiers.B.push(character);
-              break;
-          }
-        }
-      }
-    });
+    const weekData = WEEKS.find((week) => week.week === selectedWeek);
+    if (weekData) {
+      filteredCharacters.forEach((character) => {
+        const tier = getTierForCharacter(character, weekData);
+        tiers[tier].push(character);
+      });
+    }
 
     return tiers;
-  }, [filteredCharacters, selectedWeek]);
+  }, [filteredCharacters, selectedWeek, getTierForCharacter]);
 
   return (
     <MLCharacterList title={title} toggleWeeks={toggleWeeks}>

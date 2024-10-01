@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, CircleHelp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 import { Search } from "@/components/Search";
 import {
@@ -69,11 +69,11 @@ const MLCharacterList = ({
     };
   }, []);
 
-  const handleWeekChange = (weekNumber: number) => {
+  const handleWeekChange = useCallback((weekNumber: number) => {
     setSelectedWeek(weekNumber);
     setSelectedWeekCharacters(weekNumber);
     setIsOpen(false);
-  };
+  }, [setSelectedWeek, setSelectedWeekCharacters]);
 
   // Sort weeks in descending order
   const sortedWeeks = [...WEEKS].sort((a, b) => b.week - a.week);
