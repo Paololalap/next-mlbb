@@ -14,7 +14,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   const pathname = usePathname();
 
   return (
-    <header className={cn("mb-10", className)}>
+    <header
+      className={cn("mx-auto mb-10 md:max-w-2xl lg:max-w-full", className)}
+    >
       <ul className="flex gap-x-1">
         <li>
           <Link href="/">

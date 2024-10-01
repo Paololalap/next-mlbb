@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, CircleHelp } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { Search } from "@/components/Search";
@@ -16,17 +16,16 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
-import { LANES } from "@/constants/LANES";
-import { ROLES } from "@/constants/ROLES";
-import { WEEKS } from "@/constants/WEEKS";
-import { laneMapping, useCharacter } from "@/stores/useCharacter";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
+import { LANES } from "@/constants/LANES";
+import { ROLES } from "@/constants/ROLES";
+import { WEEKS } from "@/constants/WEEKS";
+import { laneMapping, useCharacter } from "@/stores/useCharacter";
 
 interface MLCharacterListProps {
   children: React.ReactNode;
@@ -81,16 +80,16 @@ const MLCharacterList = ({
 
   return (
     <main>
-      <Card>
-        <CardHeader className="flex flex-row justify-between space-y-0">
-          <div className="flex items-center gap-x-3">
+      <Card className="mx-auto md:max-w-2xl lg:max-w-full">
+        <CardHeader className="flex items-center justify-between space-y-0 pb-4 lg:flex-row lg:pb-6">
+          <div className="mb-2 flex w-full items-center justify-between gap-x-3 lg:mb-0 lg:w-auto">
             <CardTitle>{title}</CardTitle>
             {toggleWeeks && (
-              <>
+              <div className="flex gap-x-2">
                 <div className="relative" ref={dropdownRef}>
                   <motion.button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="flex h-10 w-[160px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-[150px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span className="truncate">{selectedWeekLabel}</span>
                     <motion.div
@@ -108,12 +107,12 @@ const MLCharacterList = ({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute z-10 mt-2 w-[160px] rounded-md border bg-popover text-popover-foreground shadow-md"
+                        className="absolute z-10 mt-2 w-[150px] rounded-md border bg-popover text-popover-foreground shadow-md"
                       >
                         {sortedWeeks.map((week) => (
                           <motion.li
                             key={week.week}
-                            className="flex h-10 w-[160px] cursor-pointer items-center whitespace-nowrap px-3 text-sm hover:bg-accent hover:text-accent-foreground"
+                            className="flex h-10 w-[150px] cursor-pointer items-center whitespace-nowrap px-3 text-sm hover:bg-accent hover:text-accent-foreground"
                             onClick={() => handleWeekChange(week.week)}
                           >
                             Week {week.week}
@@ -123,7 +122,6 @@ const MLCharacterList = ({
                     )}
                   </AnimatePresence>
                 </div>
-
                 <TooltipProvider delayDuration={0}>
                   <Tooltip>
                     <TooltipTrigger>
@@ -143,13 +141,13 @@ const MLCharacterList = ({
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-              </>
+              </div>
             )}
           </div>
           <Search value={searchQuery} onChange={setSearchQuery} />
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center gap-x-5">
+        <CardContent className="pb-4 lg:pb-6">
+          <div className="flex flex-col items-center justify-center gap-x-5 gap-y-1 md:flex-row md:gap-y-0">
             <ul className="flex gap-x-2">
               {LANES.map((lane) => (
                 <li key={lane.title} className="size-10">

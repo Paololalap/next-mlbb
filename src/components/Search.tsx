@@ -22,14 +22,14 @@ const Search = ({ value, onChange }: SearchProps) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full lg:w-auto">
       <SearchIcon className="absolute left-2 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
       <Input
         type="text"
         placeholder="Search..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-fit bg-accent pl-8"
+        className="lg:w-fit w-full bg-accent pl-8"
         ref={inputRef} // Add ref to the Input component
       />
       {value && (

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { MLCharacterList } from "@/components/MLCharacterList";
 import { LANES } from "@/constants/LANES";
@@ -28,17 +28,18 @@ const MLCharacterListWrapper = ({
   tierList: boolean;
 }) => {
   // Destructure values from useCharacter hook
-  const { selectedLanes, selectedRoles, searchQuery, selectedWeek } = useCharacter();
+  const { selectedLanes, selectedRoles, searchQuery, selectedWeek } =
+    useCharacter();
 
   // Add this new state
   const [uniqueCharacters, setUniqueCharacters] = useState<Character[]>([]);
 
   // Add this useEffect hook
   useEffect(() => {
-    const uniqueChars = characters.map(char => ({
+    const uniqueChars = characters.map((char) => ({
       ...char,
       // Create a unique identifier using name and lane
-      uniqueId: `${char.name}-${char.lane.join('-')}`
+      uniqueId: `${char.name}-${char.lane.join("-")}`,
     }));
     setUniqueCharacters(uniqueChars);
   }, [characters]);
@@ -69,8 +70,9 @@ const MLCharacterListWrapper = ({
 
       if (weekData) {
         const characterData = weekData.characters.find(
-          (c) => c.name.toLowerCase() === character.name.toLowerCase() &&
-                 c.lane.every(lane => character.lane.includes(lane))
+          (c) =>
+            c.name.toLowerCase() === character.name.toLowerCase() &&
+            c.lane.every((lane) => character.lane.includes(lane)),
         );
         if (characterData) {
           switch (characterData.tierScore) {
@@ -109,7 +111,7 @@ const MLCharacterListWrapper = ({
               >
                 {tier}
               </div>
-              <div className="grid w-full grid-cols-8 gap-2 rounded-lg bg-secondary">
+              <div className="grid w-full grid-cols-2 gap-2 rounded-lg bg-secondary min-[475px]:grid-cols-4 sm:grid-cols-5 lg:grid-cols-8">
                 {characters.map((character, index) => (
                   <div
                     key={index}
@@ -141,7 +143,7 @@ const MLCharacterListWrapper = ({
         </div>
       ) : (
         <div className="w-full rounded-lg">
-          <div className="grid grid-cols-8 gap-2">
+          <div className="grid grid-cols-3 gap-2 min-[475px]:grid-cols-5 lg:grid-cols-8">
             {filteredCharacters.map((character, index) => (
               <div
                 key={index}
@@ -154,12 +156,12 @@ const MLCharacterListWrapper = ({
                   <Image
                     src={
                       LANES.find((lane) =>
-                        character.lane.includes(lane.apiValue)
+                        character.lane.includes(lane.apiValue),
                       )?.src || ""
                     }
                     alt={
                       LANES.find((lane) =>
-                        character.lane.includes(lane.apiValue)
+                        character.lane.includes(lane.apiValue),
                       )?.alt || ""
                     }
                     fill
