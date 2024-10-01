@@ -1,15 +1,15 @@
-import { getServerSession } from "next-auth";
+/* import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"; */
 import { LoginForm } from "@/components/form/Login";
 
 export default async function LoginPage() {
-  const session = await getServerSession(authOptions);
+ /*  const session = await getServerSession(authOptions);
 
   if (session) {
     redirect("/");
-  }
+  } */
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
