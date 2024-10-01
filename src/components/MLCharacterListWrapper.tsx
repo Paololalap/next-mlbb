@@ -28,7 +28,7 @@ const MLCharacterListWrapper = ({
   tierList: boolean;
 }) => {
   // Destructure values from useCharacter hook
-  const { selectedLanes, selectedRoles, searchQuery } = useCharacter();
+  const { selectedLanes, selectedRoles, searchQuery, selectedWeek } = useCharacter();
 
   // Add this new state
   const [uniqueCharacters, setUniqueCharacters] = useState<Character[]>([]);
@@ -65,12 +65,7 @@ const MLCharacterListWrapper = ({
     };
 
     filteredCharacters.forEach((character) => {
-      const weekData = WEEKS.find((week) =>
-        week.characters.some(
-          (c) => c.name.toLowerCase() === character.name.toLowerCase() &&
-                 c.lane.every(lane => character.lane.includes(lane))
-        ),
-      );
+      const weekData = WEEKS.find((week) => week.week === selectedWeek);
 
       if (weekData) {
         const characterData = weekData.characters.find(
@@ -101,7 +96,7 @@ const MLCharacterListWrapper = ({
     });
 
     return tiers;
-  }, [filteredCharacters]);
+  }, [filteredCharacters, selectedWeek]);
 
   return (
     <MLCharacterList title={title} toggleWeeks={toggleWeeks}>

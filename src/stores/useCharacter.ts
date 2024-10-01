@@ -48,16 +48,14 @@ const useCharacter = create<CharacterState>((set) => ({
 
   setSearchQuery: (query) => set({ searchQuery: query }),
 
-  setSelectedWeek: (week) => set((state) => {
-    const newLabel = week === highestWeekNumber ? "Current Patch" : `Week ${week}`;
-    return { 
-      selectedWeek: week,
-      selectedWeekLabel: newLabel
-    };
-  }),
+  setSelectedWeek: (week) => set((state) => ({
+    selectedWeek: week,
+    selectedWeekLabel: week === highestWeekNumber ? "Current Patch" : `Week ${week}`,
+  })),
 
   setSelectedWeekCharacters: (weekNumber) => set((state) => ({
-    selectedWeekCharacters: WEEKS.find(week => week.week === weekNumber)?.characters || []
+    selectedWeekCharacters: WEEKS.find(week => week.week === weekNumber)?.characters || [],
+    selectedWeekLabel: weekNumber === highestWeekNumber ? "Current Patch" : `Week ${weekNumber}`,
   })),
 }));
 
