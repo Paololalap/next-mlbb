@@ -7,7 +7,7 @@ export default function NonAdminLayout({
 }>) {
   return (
     <>
-      <Header className='pt-10'/>
+      <Header className='mt-10'/>
       {children}
     </>
   );
