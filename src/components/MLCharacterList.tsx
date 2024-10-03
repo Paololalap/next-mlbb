@@ -148,39 +148,86 @@ const MLCharacterList = ({
         </CardHeader>
         <CardContent className="pb-4 lg:pb-6">
           <div className="flex flex-col items-center justify-center gap-x-5 gap-y-1 md:flex-row md:gap-y-0">
-            <ul className="flex gap-x-2">
-              {LANES.map((lane) => (
-                <li key={lane.title} className="size-10">
-                  <Toggle
-                    className="relative size-full border border-input"
-                    title={lane.title}
-                    pressed={selectedLanes.includes(
-                      laneMapping[lane.title as keyof typeof laneMapping],
-                    )}
-                    onPressedChange={() => toggleLane(lane.title)}
+            <motion.ul layout className="flex gap-x-2">
+              <AnimatePresence>
+                {LANES.map((lane) => (
+                  <motion.li
+                    key={lane.title}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
+                    className="size-10"
                   >
-                    <Image src={lane.src} fill alt={lane.alt} className="p-2" />
-                  </Toggle>
-                </li>
-              ))}
-            </ul>
+                    <Toggle
+                      className="relative size-full border border-input"
+                      title={lane.title}
+                      pressed={selectedLanes.includes(
+                        laneMapping[lane.title as keyof typeof laneMapping],
+                      )}
+                      onPressedChange={() => toggleLane(lane.title)}
+                    >
+                      <motion.div
+                        initial={{ opacity: 0.6 }}
+                        animate={{
+                          opacity: selectedLanes.includes(
+                            laneMapping[lane.title as keyof typeof laneMapping],
+                          )
+                            ? 1
+                            : 0.6,
+                        }}
+                        whileHover={{ opacity: 1 }}
+                      >
+                        <Image
+                          src={lane.src}
+                          fill
+                          alt={lane.alt}
+                          className="p-2"
+                        />
+                      </motion.div>
+                    </Toggle>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </motion.ul>
 
             <Separator orientation="vertical" />
 
-            <ul className="flex gap-x-2">
-              {ROLES.map((role) => (
-                <li key={role.title} className="size-10">
-                  <Toggle
-                    className="relative size-full border border-input"
-                    title={role.title}
-                    pressed={selectedRoles.includes(role.title.toLowerCase())}
-                    onPressedChange={() => toggleRole(role.title)}
+            <motion.ul layout className="flex gap-x-2">
+              <AnimatePresence>
+                {ROLES.map((role) => (
+                  <motion.li
+                    key={role.title}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
+                    className="size-10"
                   >
-                    <Image src={role.src} fill alt={role.alt} />
-                  </Toggle>
-                </li>
-              ))}
-            </ul>
+                    <Toggle
+                      className="relative size-full border border-input"
+                      title={role.title}
+                      pressed={selectedRoles.includes(role.title.toLowerCase())}
+                      onPressedChange={() => toggleRole(role.title)}
+                    >
+                      <motion.div
+                        initial={{ opacity: 0.6 }}
+                        animate={{
+                          opacity: selectedRoles.includes(
+                            role.title.toLowerCase(),
+                          )
+                            ? 1
+                            : 0.6,
+                        }}
+                        whileHover={{ opacity: 1 }}
+                      >
+                        <Image src={role.src} fill alt={role.alt} />
+                      </motion.div>
+                    </Toggle>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
+            </motion.ul>
           </div>
         </CardContent>
         <CardFooter>{children}</CardFooter>
