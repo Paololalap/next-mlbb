@@ -41,16 +41,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             </Button>
           </Link>
         </li>
-        <li>
-          <Link href="/about">
-            <Button
-              variant="ghost"
-              className={cn("text-lg", pathname === "/about" && "bg-accent")}
-            >
-              About
-            </Button>
-          </Link>
-        </li>
       </ul>
     </header>
   );
