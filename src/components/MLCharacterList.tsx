@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, CircleHelp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Search } from "@/components/Search";
 import {
@@ -69,14 +69,18 @@ const MLCharacterList = ({
     };
   }, []);
 
-  const handleWeekChange = useCallback((weekNumber: number) => {
-    setSelectedWeek(weekNumber);
-    setSelectedWeekCharacters(weekNumber);
-    setIsOpen(false);
-  }, [setSelectedWeek, setSelectedWeekCharacters]);
+  const handleWeekChange = useCallback(
+    (weekNumber: number) => {
+      setSelectedWeek(weekNumber);
+      setSelectedWeekCharacters(weekNumber);
+      setIsOpen(false);
+    },
+    [setSelectedWeek, setSelectedWeekCharacters],
+  );
 
   // Sort weeks in descending order
   const sortedWeeks = [...WEEKS].sort((a, b) => b.week - a.week);
+  const highestWeek = sortedWeeks[0].week; // temporary
 
   return (
     <main>
@@ -115,7 +119,10 @@ const MLCharacterList = ({
                             className="flex h-10 w-[150px] cursor-pointer items-center whitespace-nowrap px-3 text-sm hover:bg-accent hover:text-accent-foreground"
                             onClick={() => handleWeekChange(week.week)}
                           >
-                            Week {week.week}
+                            {week.week === highestWeek
+                              ? "Playoffs"
+                              : `Week ${week.week}`}
+                            {/* Week {week.week} */}
                           </motion.li>
                         ))}
                       </motion.ul>

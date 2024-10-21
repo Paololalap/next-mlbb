@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { WEEKS } from '@/constants/WEEKS';
+
+import { WEEKS } from "@/constants/WEEKS";
 
 // Define the store state type
 interface CharacterState {
@@ -11,13 +12,13 @@ interface CharacterState {
   toggleRole: (roleTitle: string) => void;
   setSearchQuery: (query: string) => void;
   setSelectedWeek: (week: number) => void;
-  selectedWeekCharacters: typeof WEEKS[0]['characters'];
+  selectedWeekCharacters: (typeof WEEKS)[0]["characters"];
   setSelectedWeekCharacters: (weekNumber: number) => void;
   selectedWeekLabel: string;
 }
 
 // Get the highest week number
-const highestWeekNumber = Math.max(...WEEKS.map(week => week.week));
+const highestWeekNumber = Math.max(...WEEKS.map((week) => week.week));
 
 // Create the store
 const useCharacter = create<CharacterState>((set) => ({
@@ -25,8 +26,9 @@ const useCharacter = create<CharacterState>((set) => ({
   selectedRoles: [],
   searchQuery: "",
   selectedWeek: highestWeekNumber,
-  selectedWeekCharacters: WEEKS.find(week => week.week === highestWeekNumber)?.characters || [],
-  selectedWeekLabel: "Current Patch",
+  selectedWeekCharacters:
+    WEEKS.find((week) => week.week === highestWeekNumber)?.characters || [],
+  selectedWeekLabel: "Playoffs", // "Current Patch"
 
   toggleLane: (laneTitle) =>
     set((state) => {
@@ -48,15 +50,24 @@ const useCharacter = create<CharacterState>((set) => ({
 
   setSearchQuery: (query) => set({ searchQuery: query }),
 
-  setSelectedWeek: (week) => set((state) => ({
-    selectedWeek: week,
-    selectedWeekLabel: week === highestWeekNumber ? "Current Patch" : `Week ${week}`,
-  })),
+  setSelectedWeek: (week) =>
+    set((state) => ({
+      selectedWeek: week,
+      selectedWeekLabel:
+        week === highestWeekNumber
+          ? "Playoffs" /* "Current Patch" */
+          : `Week ${week}`,
+    })),
 
-  setSelectedWeekCharacters: (weekNumber) => set((state) => ({
-    selectedWeekCharacters: WEEKS.find(week => week.week === weekNumber)?.characters || [],
-    selectedWeekLabel: weekNumber === highestWeekNumber ? "Current Patch" : `Week ${weekNumber}`,
-  })),
+  setSelectedWeekCharacters: (weekNumber) =>
+    set((state) => ({
+      selectedWeekCharacters:
+        WEEKS.find((week) => week.week === weekNumber)?.characters || [],
+      selectedWeekLabel:
+        weekNumber === highestWeekNumber
+          ? "Playoffs" /* "Current Patch" */
+          : `Week ${weekNumber}`,
+    })),
 }));
 
 // Export the laneMapping object
